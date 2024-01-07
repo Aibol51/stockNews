@@ -1,4 +1,3 @@
-import { stockList } from './../../views/stockLine/codeList';
 export interface HangqingItem {
     f1: number
     f2: number
@@ -92,4 +91,65 @@ export interface WeekNewsResponse {
     code: string;
     message: string;
     data: WeekNewsData;
+}
+
+export interface BaseDataResp<T> {
+    code: number;
+    msg: string;
+    data: T;
+}
+
+export interface CaptchaResp {
+    captchaId: string;
+    imgPath: string;
+}
+
+export interface RegisterReq {
+    captcha: string;
+    phoneNumber: string;
+    password: string;
+    username: string;
+
+}
+
+export interface loginReq {
+    captcha: string;
+    captchaId: string;
+    password: string;
+    mobile: string;
+}
+
+export interface loginResp {
+    avatar: string;
+    expire: number;
+    email: string;
+    nickname: string;
+    rankId: string;
+    rankName: string;
+    token: string;
+    userId: string;
+    mobile: string;
+}
+
+export interface UserInfoReq {
+    id: string;
+}
+
+export interface UserInfoResp {
+    avatar: string;
+    expire: number;
+    email: string;
+    nickname: string;
+    rankId: string;
+    rankName: string;
+    token: string;
+    userId: string;
+    mobile: string;
+}
+
+export interface UpdateUserInfoReq {
+    avatar: string;
+    nickname: string;
+    mobile: string;
+    email: string;
 }

@@ -17,7 +17,7 @@
 
         <div class="flex items-baseline gap-[3vw] text-[#fff]">
           <p class="font-bold text-[4.4vw]">每日牛股推荐</p>
-          <p class="text-red-600">资料仅供参考 投资需谨慎</p>
+          <p class="text-red-600 text-[3.5vw]">资料仅供参考 投资需谨慎</p>
         </div>
       </div>
       <div
@@ -32,29 +32,50 @@
         <div
           v-else
           class="recomendItem w-full flex flex-row justify-between"
-          v-for="(item, index) in recommendedStocks"
+          v-for="(item, index) in userStore.isLoggedIn
+            ? recommendedStocks
+            : recommendedStocks.slice(0, 1)"
         >
-          <div class="leftItem flex flex-row gap-[3vw]">
-            <p
-              class="font-bold text-[4.4vw]"
-              :style="{ color: index === 0 ? '#C61010' : '#FF912F' }"
+          <p
+            class="font-bold text-[4.4vw] w-[10%]"
+            :style="{ color: index === 0 ? '#C61010' : '#FF912F' }"
+          >
+            {{ index + 1 }}
+          </p>
+          <p class="font-bold text-[4.4vw] w-[25%]">
+            {{ item.stockName }}
+          </p>
+          <p class="text-[4.4vw] text-[#9F9F9F] w-[25%]">
+            {{ item.stockCode }}
+          </p>
+
+          <p
+            class="text-[4.4vw] font-bold w-[15%]"
+            :class="[Number(item.stockRise) <= 0 ? 'greenText' : 'redText']"
+          >
+            {{ item.stockRise }}
+          </p>
+          <p
+            class="text-[4.4vw] font-bold w-[15%]"
+            :class="[Number(item.stockRise) <= 0 ? 'greenText' : 'redText']"
+          >
+            {{ item.stockFall }}
+          </p>
+        </div>
+        <div
+          v-if="!userStore.isLoggedIn"
+          class="flex items-center justify-center"
+        >
+          <img class="w-[30vw]" src="/img/noLogin.png" alt="" />
+          <div>
+            <p class="text-[#757575] text-[3.5vw]">登录查看更多</p>
+            <n-button
+              color="#3189f5"
+              round
+              strong
+              @click="loginModalStore.openLoginModal"
+              >去登录 ></n-button
             >
-              {{ index + 1 }}
-            </p>
-            <p class="font-bold text-[4.4vw]">
-              {{ item.stockName }}
-            </p>
-            <p class="text-[4.4vw] text-[#9F9F9F]">
-              {{ item.stockCode }}
-            </p>
-          </div>
-          <div class="rightItem text-[4.4vw] font-bold flex gap-[5vw]">
-            <p :class="[Number(item.stockRise) <= 0 ? 'greenText' : 'redText']">
-              {{ item.stockRise }}
-            </p>
-            <p :class="[Number(item.stockRise) <= 0 ? 'greenText' : 'redText']">
-              {{ item.stockFall }}
-            </p>
           </div>
         </div>
       </div>
@@ -77,10 +98,18 @@
         <n-skeleton text :repeat="3" :sharp="false" height="135px" />
       </div>
       <template v-else>
-        <div class="recomendList grid grid-cols-3 gap-[1vw]">
+        <div
+          :class="
+            userStore.isLoggedIn
+              ? 'recomendList grid grid-cols-3 gap-[1vw]'
+              : 'recomendList grid grid-cols-2 align-items-center'
+          "
+        >
           <div
             class="Item flex flex-col items-center justify-around border-[#97C1FF] border-[0.1vw] rounded-[0.2vw] p-[10px] h-max"
-            v-for="(item, index) in recommendedStocks"
+            v-for="(item, index) in userStore.isLoggedIn
+              ? recommendedStocks
+              : recommendedStocks.slice(0, 1)"
             :key="index"
           >
             <div class="leftItem flex flex-col whitespace-nowrap items-center">
@@ -106,12 +135,28 @@
               </p>
             </div>
             <van-text-ellipsis
-            class="w-full"
-                rows="2"
-                :content="item.details"
-                expand-text="展开"
-                collapse-text="收起"
-              />
+              class="w-full"
+              rows="2"
+              :content="item.details"
+              expand-text="展开"
+              collapse-text="收起"
+            />
+          </div>
+          <div
+            v-if="!userStore.isLoggedIn"
+            class="flex items-center justify-center"
+          >
+            <img class="w-[150px]" src="/img/noLogin.png" alt="" />
+            <div>
+              <p class="text-[#757575] text-[15px]">登录查看更多</p>
+              <n-button
+                color="#3189f5"
+                round
+                strong
+                @click="loginModalStore.openLoginModal"
+                >去登录 ></n-button
+              >
+            </div>
           </div>
         </div>
       </template>
@@ -124,19 +169,25 @@
 <script setup lang="ts">
 import HistoryStock from "./stockHistory.vue";
 import { computed } from "vue";
-import { useDeviceStore, recomendedStore } from "@/stores/index";
+import {
+  useDeviceStore,
+  recomendedStore,
+  useUserStore,
+  useLoginModalStore,
+} from "@/stores/index";
 import { RecomendedItem } from "@/api/interface/index.ts";
 const { isMobile } = useDeviceStore();
 const recomendStore = recomendedStore();
 const recomendedLoading = computed(() => recomendStore.recomendLoading);
 const recomendData = computed(() => recomendStore.recomendData);
-
+const userStore = useUserStore();
+const loginModalStore = useLoginModalStore();
 const recommendedStocks = computed(() => {
-  const filtered = recomendData.value.filter((stock: RecomendedItem) => stock.isRecommend);
+  const filtered = recomendData.value.filter(
+    (stock: RecomendedItem) => stock.isRecommend
+  );
   return filtered;
 });
-
-
 </script>
 <style scoped>
 .recomendItem {

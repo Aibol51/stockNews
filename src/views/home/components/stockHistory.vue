@@ -4,7 +4,7 @@
       <img src="/img/bullStock.svg" alt="" class="w-[20px]" />
       <p class="font-bold text-[15px]">历史推荐</p>
     </div>
-    <p class="cursor-pointer" @click="showModal = true">查看更多></p>
+    <p class="cursor-pointer" @click="openModal">查看更多></p>
   </div>
   <div class="grid grid-cols-2 gap-[10px]" v-if="recomendedLoading">
     <n-skeleton text :repeat="4" :sharp="false" height="35px" />
@@ -14,7 +14,7 @@
       class="flex whitespace-nowrap justify-center bg-[#F6F7F9] p-[5px] justify-between px-[10px] py-[5px] rounded-[5px] items-center cursor-pointer"
       v-for="(item, index) in recommendedStocks.slice(0, 4)"
       :key="index"
-      @click="showModal = true"
+      @click="openModal"
     >
       <p class="text-[15px] text-[#5E5E5E] font-bold">{{ item.stockName }}</p>
       <p class="text-[#5E5E5E]">{{ item.stockCode }}</p>
@@ -32,12 +32,13 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import StockModal from "./stockModal.vue";
-import { recomendedStore } from "@/stores/index";
+import { recomendedStore,useLoginModalStore,useUserStore } from "@/stores/index";
 import { RecomendedItem } from "@/api/interface/index.ts";
 const recomendStore = recomendedStore();
 const recomendedLoading = computed(() => recomendStore.recomendLoading);
 const recomendData = computed(() => recomendStore.recomendData);
-
+const userStore = useUserStore();
+const loginModalStore = useLoginModalStore();
 const recommendedStocks = computed(() => {
   const filtered = recomendData.value.filter(
     (stock: RecomendedItem) => !stock.isRecommend
@@ -46,6 +47,14 @@ const recommendedStocks = computed(() => {
 });
 
 const showModal = ref(false);
+
+const openModal = () => {
+  if(!userStore.isLoggedIn){
+    loginModalStore.openNoLoginModal();
+    return;
+  }
+  showModal.value = true;
+};
 </script>
 <style scoped>
 .greenText {

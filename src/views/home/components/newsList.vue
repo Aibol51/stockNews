@@ -17,7 +17,7 @@
       :key="index"
     >
       <div class="flex flex-row gap-[2vw] newsItem">
-        <div class="flex flex-col justify-between" style="flex-grow: 4">
+        <div class="flex flex-col justify-between w-full" style="flex-grow: 4">
           <p class="multiline-ellipsis font-bold text-[3.5vw]">
             {{ item.title }}
           </p>

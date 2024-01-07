@@ -10,7 +10,14 @@
         <NewsList />
       </van-tab>
       <van-tab title="推荐历史" title-style="font-size:4.5vw;font-weight:bold">
-        <div class="recomendList flex flex-col gap-[3vw] py-[2vw]">
+        <div v-if="!userStore.isLoggedIn" class="flex items-center justify-center">
+          <img class="w-[30vw]" src="/img/noLogin.png" alt="" />
+          <div>
+            <p class="text-[#757575] text-[3.5vw]">登录查看更多</p>
+            <n-button color="#3189f5" round strong @click="loginModalStore.openLoginModal">去登录 ></n-button>
+          </div>
+        </div>
+        <div v-else class="recomendList flex flex-col gap-[3vw] py-[2vw]">
           <div
             class="Item flex flex-col items-center justify-around shadow-md border-[#d8d8d8] border-[0.1vw] rounded-[1.2vw] py-[2.5vw] px-[5vw]"
             v-for="(item, index) in recommendedStocks"
@@ -59,6 +66,7 @@
             </div>
           </div>
         </div>
+        
       </van-tab>
     </van-tabs>
   </div>
@@ -71,12 +79,14 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useDeviceStore, recomendedStore } from "@/stores/index";
+import { useDeviceStore, recomendedStore,useUserStore,useLoginModalStore } from "@/stores/index";
 import { RecomendedItem } from "@/api/interface/index.ts";
 import NewsList from "./newsList.vue";
 const { isMobile } = useDeviceStore();
 const recomendStore = recomendedStore();
 const active = ref(0);
+const userStore = useUserStore();
+const loginModalStore = useLoginModalStore();
 
 const recomendData = computed(() => recomendStore.recomendData);
 
