@@ -1,6 +1,6 @@
 // stores/useStockStore.ts
 import { defineStore } from 'pinia';
-import { HangqingItem, RecomendedItem, loginResp, UserInfoResp } from '@/api/interface/index.ts';
+import { HangqingItem, RecomendedItem, UserInfoResp } from '@/api/interface/index.ts';
 import { ref, reactive } from 'vue';
 export const useStockStore = defineStore('stock', {
     state: () => {
@@ -114,7 +114,8 @@ export const useUserStore = defineStore('user', {
     getters: {
         isLoggedIn: (state) => {
             // Check if userInfo contains keys
-            return Object.keys(state.userInfo).length > 0;
+            // return Object.keys(state.userInfo).length > 0;
+            return state.userInfo.token && state.userInfo.token.trim() !== '';
         }
     },
     actions: {

@@ -1,8 +1,14 @@
 <template>
   <div class="stockSwipe px-[4vw] py-[3vw]" v-if="isMobile">
-    <div class="flex items-center gap-[1vw]">
-      <img src="/img/line.png" alt="" class="w-[5.5vw]" />
-      <p class="font-bold text-[4.4vw]">今日指数</p>
+    <div class="flex items-center gap-[1vw] justify-between mb-[2vw]">
+      <div class="flex items-center gap-[1vw]">
+        <img src="/img/line.png" alt="" class="w-[5.5vw]" />
+        <p class="font-bold text-[4.4vw]">今日指数</p>
+      </div>
+      <div class="flex items-center gap-[1vw] font-bold text-[3.5vw]" @click="copyToClipboard(randomDomain.url)">
+        <p>永久域名：</p>
+        <p class="text-red-600">{{randomDomain.url}}</p>
+      </div>
     </div>
     <n-skeleton
       v-if="hangqingLoading"
@@ -142,7 +148,10 @@ import {
 import "swiper/css";
 import "swiper/css/pagination";
 import { HangqingItem } from "@/api/interface/index.ts";
+import { domainList } from "@/utils/domainList";
+import { useMessage } from "naive-ui";
 
+const copyMessage = useMessage();
 const router = useRouter();
 const store = useStockStore();
 const userStore = useUserStore();
@@ -170,6 +179,23 @@ const isSwiperReady = computed(() => store.isSwiperReady);
 
 const stockModules = [Autoplay, EffectFade];
 const mySwiper = ref(null);
+
+const randomDomain = computed(() => {
+  const randomIndex = Math.floor(Math.random() * domainList.length);
+  return domainList[randomIndex];
+});
+
+
+const copyToClipboard = (text: string) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      copyMessage.success("复制成功！");
+    })
+    .catch(() => {
+      copyMessage.error("复制失败！");
+    });
+};
 </script>
 <style scoped>
 .greenBack {

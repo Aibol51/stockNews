@@ -1,6 +1,8 @@
 <template>
   <div v-if="isMobile">
-    <StockSwipe />
+    <n-message-provider>
+      <StockSwipe />
+    </n-message-provider>
     <Recomended />
     <TabBar />
   </div>

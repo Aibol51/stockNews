@@ -1,18 +1,105 @@
 # Vue 3 + TypeScript + Vite
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# 项目运行
+```
+开发所使用npm 版本：18.17.1
+npm install //安装依赖
+npm run dev //运行项目
+npm run build //打包项目
+```
 
-## Recommended IDE Setup
+# 项目结构
+```
+│  .env //全局环境变量，配置api接口地址和站点名称
+│  auto-imports.d.ts //ui框架自动导入声明文件
+│  components.d.ts //组件声明文件
+│  index.html //入口html
+│  list.txt
+│  package-lock.json
+│  package.json
+│  postcss.config.js //postcss配置文件
+│  README.md
+│  tailwind.config.js //tailwindcss配置文件
+│  tsconfig.json //ts配置文件
+│  tsconfig.node.json //node环境下ts配置文件
+│  vite.config.ts //vite配置文件
+│           
+├─public //静态资源目录
+│  │  
+│  ├─img //图片资源
+│  │      
+│  └─stockPro //股票趋势图内嵌网页
+│     
+│                              
+└─src
+    │  App.vue //根组件
+    │  main.ts //入口文件
+    │  vite-env.d.ts //vite环境变量声明文件
+    │  
+    ├─api
+    │  │  fetchNews.ts //获取新闻列表接口
+    │  │  getCaptcha.ts //获取验证码接口
+    │  │  getHangQingData.ts //获取行情数据接口
+    │  │  getRecomended.ts //获取推荐股票接口
+    │  │  getWeekNews.ts //获取新闻接口
+    │  │  stockUser.ts //获取用户信息接口
+    │  │  
+    │  └─interface //接口声明文件
+    │          index.ts
+    │          
+    ├─assets //静态资源
+    │      
+    ├─components //组件
+    │  │  topBar.vue //顶部导航栏
+    │  │  
+    │  ├─loginDialog //登录注册弹窗
+    │  │  │  index.vue //弹窗组件
+    │  │  │  loginModal.ts //登录弹窗逻辑
+    │  │  │  
+    │  │  └─components //弹窗内组件
+    │  │          loginForm.vue //登录表单
+    │  │          registerForm.vue //注册表单
+    │  │          
+    │  ├─noLoginDialog //未登录弹窗
+    │  │      index.vue //弹窗组件
+    │  │      
+    │  └─profileDialog //个人信息弹窗
+    │      │  index.vue //弹窗组件
+    │      │  
+    │      └─components //弹窗内组件
+    │              profileForm.vue //个人信息表单
+    │              
+    ├─router //路由
+    │      index.ts //路由配置文件
+    │      
+    ├─stores //pinia状态管理
+    │      index.ts //状态管理配置文件
+    │      
+    ├─style //全局样式
+    │      tailwind.css //tailwindcss样式
+    │      
+    ├─utils //工具函数
+    │      domainList.ts //股票域名列表
+    │      
+    └─views //页面
+        ├─home //首页
+        │  │  index.vue
+        │  │  
+        │  └─components //首页组件
+        │          newsList.vue //新闻列表
+        │          recomendStock.vue //推荐股票
+        │          stockHistory.vue //股票历史
+        │          stockModal.vue //股票弹窗
+        │          stockSwipe.vue //股票滑动
+        │          stockTab.vue //股票tab
+        │          tabBar.vue //底部导航栏
+        │          weekNews.vue //新闻
+        │          
+        ├─newsPage //新闻详情页
+        │      index.vue
+        │      
+        └─stockLine //股票趋势图
+                codeList.ts //股票代码列表
+                index.vue //股票趋势图组件
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support For `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+```
